@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+
+__pycache__
+
+*.pyc
+
+*.sqlite3
+
+# Logs
+*.log
+
+venv/
+.myenv/
+backend/myenv/
+
+backend/debatrix/venv
+backend/debatrix/db.sqlite3
+# Environment files
+backend/debatrix/debatrix/.env
+env
+.env
+.venv
+.env.localgit show --name-only <commit-hash>
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build output
+out/
+
+# System files
+.DS_Store
+
+# Other files/directories to ignore

@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .outline-standard {
+    @apply outline outline-2 outline-white
+  }
+
+}
+
+@layer components {
+  .custom_button {
+    @apply flex rounded-lg p-2 m-2 outline-standard zoom cursor-pointer justify-center items-center hover:bg-gray-800 hover:backdrop-blur-sm duration-300;
+  }
+  .reply_box {
+    @apply m-5 overflow-hidden p-2 text-white bg-white bg-opacity-10 rounded-lg focus:outline-none box-border flex-grow;
+  }
+
+  .zoom {
+    @apply transform transition-transform duration-300 hover:scale-110
+  }
+  .invisible_box {
+    @apply bg-transparent text-white w-full focus:outline-none m-2;
+    max-width: 100%; /* Constrain width */
+    overflow-wrap: break-word; /* Prevent long words from overflowing */
+    min-height: 100px; /* Optional: set a minimum height */
+    resize: none;
+    overflow: hidden;
+  }
+  .blur_background {
+    @apply hover:bg-gray-800 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:backdrop-blur-sm;
+  }
+  .hover\:glow:hover {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  }
+}
+
+
+@layer base {
+  h1 {
+    @apply justify-start text-3xl font-bold text-white;
+  
+  }
+  h2 {
+    @apply justify-start text-xl text-white;
+  
+  }
+
+}

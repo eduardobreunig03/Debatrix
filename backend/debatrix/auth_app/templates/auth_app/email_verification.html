@@ -1,0 +1,8 @@
+<!-- email_verification.html -->
+<p>Hello {{ user.username }},</p>
+
+<p>Thank you for registering. Please click the link below to verify your email and activate your account:</p>
+
+<a href="http://{{ domain }}/activate/{{ uid }}/{{ token }}/">Activate Account</a>
+
+<p>If you didn’t register for this account, you can ignore this email.</p>
