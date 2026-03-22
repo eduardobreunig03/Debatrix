@@ -345,6 +345,3 @@ Testing was performed in a separate branch. To switch to testing branch just run
    ```bash
    python3 test_selenium_frontend.py 
    ```
-   
-   If webdriver is not supported by Chrome: 
-   - An alternative solution is to use the Safari webdriver.  **Safari > Settings, SELECT Show Develop menu in menu bar > Develop in the menu bar > Allow Remote Automation**. In the test_selenium_frontend.py, substitute the cls.driver by commenting the current cls.driver and uncomment the cls.driver below for SAFARI.
