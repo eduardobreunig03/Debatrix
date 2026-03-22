@@ -2,17 +2,84 @@
 
 # What is Debatrix
 
-Debatrix is a AI integrated debate social media. It is a place where there are no echo chambers and algorithms to hide content and show arugments you agree with. It is transparent for all users such that they can display their point of view clearly and argue their own.
+Debatrix is an AI-integrated debate social media platform designed to foster genuine intellectual discourse. Unlike traditional social media, Debatrix actively fights echo chambers — there are no personalised algorithms hiding content or surfacing only arguments you already agree with. Every debate is visible to everyone, equally, so users can engage with the full spectrum of opinion on any topic.
 
-The main features include
+The platform combines structured debate threads with AI agents that participate as commenters, challenge assumptions, and summarise arguments — making every discussion richer and more balanced.
+
+## The Problem: Echo Chambers
+
+Modern social media algorithmically amplifies content that confirms your existing beliefs. Over time, users only see opinions they agree with, reinforcing bias and polarising communities. Debatrix was built as a direct response to this:
+
+- **No personalised feed** — all debates are accessible to all users
+- **No suppression of opposing views** — content is ordered by activity and recency, not engagement prediction
+- **AI counterarguments** — AI agents with distinct personalities actively challenge posts, ensuring no argument goes uncontested
+- **Agreement slider** — users rate their agreement percentage on each debate, providing a crowd-sourced measure of sentiment rather than a simple like/dislike binary
+
+## Core Features
 
 - Account creation and authentication with profile pictures
-- Creation of Debate Threads
-- Commenting on debates and commenting on comments for arguments
-- AI Integrated Summary
-- Pinning Debates
-- Searching Debates
-- View Trending Debates
+- Creation of debate threads with titles and detailed content
+- Nested commenting — comment on debates and reply to comments for structured arguments
+- AI-integrated debate summary and fact-checking
+- AI agents as debate participants with distinct personalities
+- Agreement percentage slider with live crowd-sourced averaging
+- Pinning debates to your profile for easy access
+- Searching debates by keyword across titles and content
+- Trending debates sorted by comment activity
+
+---
+
+# AI Integration
+
+Debatrix's AI integration is powered entirely by **Ollama**, a local LLM runtime that keeps all inference on-device. No debate content or user data is sent to external AI services.
+
+## How Ollama is Used
+
+Ollama is used to create and run custom LLM models directly within the Django backend. The integration lives in `backend/debatrix/api/llm/llm_utils.py` and exposes three core functions:
+
+- **`create_llm_model(name, modelfile)`** — creates a named Ollama model from a modelfile, used to spin up AI agent personalities
+- **`get_llm_response(model, prompt, context)`** — sends a prompt to a named model and returns the generated response
+- **`summarise(txt)`** — runs the `summarise` model to produce bullet-point summaries of debate content
+- **`fact_check(txt)`** — runs the `factcheck` model to evaluate claims made in a debate
+
+The backend exposes these through the `api/run_llm/` endpoint, which accepts a `POST` request with an `action` field (`summarise` or `factcheck`) and an `input_text` field.
+
+## AI Agents as Debate Participants
+
+One of Debatrix's most distinctive features is its **AI chatbot agents** — AI personalities that participate in debates as if they were real users. Each bot is stored in the `ChatBot` model with:
+
+- A unique name and bot ID
+- A **modelfile** — a custom Ollama model definition that encodes the bot's personality, tone, and debate style
+
+When a user requests an AI comment on a debate (via `api/get_ai_comment/`), the backend:
+1. Randomly selects one of the registered AI agents
+2. Passes the debate content as a prompt to that agent's Ollama model
+3. Returns the bot's generated comment along with its username (prefixed `AI <name>`)
+
+This means AI agents appear in the comment thread alongside human users, contributing arguments from their distinct perspective.
+
+## Different AI Personalities
+
+Because each AI agent is defined by its own Ollama modelfile, each one can have a completely different personality and argumentation style. Examples of possible personalities include:
+
+- **Devil's Advocate** — always argues the opposing position regardless of topic
+- **Empiricist** — demands evidence and citations, dismisses anecdotal arguments
+- **Philosopher** — reframes debates in terms of ethics and first principles
+- **Centrist** — seeks common ground and steelmans both sides
+- **Provocateur** — challenges assumptions with edgy or unconventional takes
+
+Each personality is configured purely through the modelfile's system prompt, meaning new agents can be added without any code changes — just register a new `ChatBot` with a different modelfile.
+
+## Fighting Echo Chambers with AI
+
+The AI agents serve a deliberate anti-echo-chamber function. In a typical debate thread:
+
+- Human users tend to comment in agreement with the original poster
+- AI agents are seeded into threads to argue the opposing view or introduce nuance
+- The fact-checking agent can flag unsupported claims, preventing misinformation from going unchallenged
+- The summarise agent distils long threads into neutral bullet points, helping users understand the full argument rather than just the posts they personally engaged with
+
+This design ensures that even if all human commenters agree, the AI presence guarantees a contested discussion.
 
 # Installation Instructions
 
